@@ -1,6 +1,7 @@
 Revision history for Perl module Spreadsheet::WriteExcel::Simple::Tabs
 
-0.01 Tue May 19 16:43:13 2009
-    - original version; created by ExtUtils::ModuleMaker 0.51
+0.02 2009-05-20T20:32Z
+  - Makefile.pm was missing prereq IO::Scalar and Spreadsheet::WriteExcel
 
-
+0.01 2009-05-19T20:43Z
+  - original version; created by ExtUtils::ModuleMaker 0.51

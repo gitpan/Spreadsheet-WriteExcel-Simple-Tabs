@@ -1,11 +1,9 @@
-pod2text Spreadsheet::WriteExcel::Simple::Tabs.pm > README
+To INSTALL
 
-If this is still here it means the programmer was too lazy to create the readme file.
+cpan2rpm Spreadsheet-WriteExcel-Simple-Tabs-0.XX.tar.gz
+sudo rpm -Uhv perl-Spreadsheet-WriteExcel-Simple-Tabs-0.XX-1.noarch.rpm
 
-You can create it now by using the command shown above from this directory.
-
-At the very least you should be able to use this set of instructions
-to install the module...
+OR
 
 perl Makefile.PL
 make

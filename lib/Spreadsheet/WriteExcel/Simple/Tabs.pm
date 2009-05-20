@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.01';
+our $VERSION='0.02';
 
 =head1 NAME
 
@@ -168,7 +168,7 @@ Try the Author.
 =head1 COPYRIGHT
 
 Copyright (c) 2009 Michael R. Davis
-Copyright (C) 2001-2005 Tony Bowden (IO::Scalar portion used here "under the same terms as Perl itself")
+Copyright (c) 2001-2005 Tony Bowden (IO::Scalar portion used here "under the same terms as Perl itself")
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
@@ -178,7 +178,7 @@ LICENSE file included with this module.
 
 =head1 SEE ALSO
 
-L<Spreadsheet::WriteExcel::Simple>, L<DBIx::Array sqlarrayarrayname>
+L<Spreadsheet::WriteExcel::Simple>, L<DBIx::Array> sqlarrayarrayname method, L<IO::Scalar>, L<Spreadsheet::WriteExcel>
 
 =cut
 

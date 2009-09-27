@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.02';
+our $VERSION='0.03';
 
 =head1 NAME
 
@@ -84,6 +84,7 @@ sub add {
 sub add1 {
   my $self=shift;
   my $tab=shift;
+  $tab=substr($tab,0,31) if length($tab) > 31; #must be <= 31 chars
   my $data=shift;
   my $sheet=$self->book->add_worksheet($tab);
   $self->add_data($sheet, $data);

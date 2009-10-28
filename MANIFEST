@@ -6,5 +6,5 @@ Changes
 Makefile.PL
 lib/Spreadsheet/WriteExcel/Simple/Tabs.pm
 t/001_load.t
-scripts/example.cgi
+scripts/Spreadsheet-WriteExcel-Simple-Tabs-example.cgi
 META.yml                                 Module meta-data (added by MakeMaker)

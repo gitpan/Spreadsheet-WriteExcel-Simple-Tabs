@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.03';
+our $VERSION='0.04';
 
 =head1 NAME
 
@@ -84,6 +84,7 @@ sub add {
 sub add1 {
   my $self=shift;
   my $tab=shift;
+  $tab=~s/[\[\]:\*\?\/\\]/ /g; #Invalid character []:*?/\ in worksheet name
   $tab=substr($tab,0,31) if length($tab) > 31; #must be <= 31 chars
   my $data=shift;
   my $sheet=$self->book->add_worksheet($tab);

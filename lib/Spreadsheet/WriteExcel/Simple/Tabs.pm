@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.04';
+our $VERSION='0.05';
 
 =head1 NAME
 
@@ -38,6 +38,10 @@ sub new {
   $self->initialize(@_);
   return $self;
 }
+
+=head2 initialize
+
+=cut
 
 sub initialize {
   my $self=shift;
@@ -76,35 +80,35 @@ sub add {
     my $data=shift;
     die(sprintf("Error: Expecting array reference but got %s", ref($data)))
       unless ref($data) eq "ARRAY";
-      $self->add1($tab=>$data);
+      $self->_add1($tab=>$data);
   }
   return $self;
 }
 
-sub add1 {
+sub _add1 {
   my $self=shift;
   my $tab=shift;
   $tab=~s/[\[\]:\*\?\/\\]/ /g; #Invalid character []:*?/\ in worksheet name
   $tab=substr($tab,0,31) if length($tab) > 31; #must be <= 31 chars
   my $data=shift;
   my $sheet=$self->book->add_worksheet($tab);
-  $self->add_data($sheet, $data);
+  $self->_add_data($sheet, $data);
   return $sheet;
 }
 
-sub add_data {
+sub _add_data {
   my $self=shift;
   my $worksheet=shift;
   my $data=shift;
   my $header=shift(@$data);
-  my %border=(border=>1, border_color=>"gray", num_format=>'@');
-  my %font=(bg_color=>"silver", bold=>1);
-  $worksheet->write_col(0,0,[$header], $self->book->add_format(%font, %border));
-  $worksheet->write_col(1,0, $data,    $self->book->add_format(%border));
+  $worksheet->write_col(0,0,[$header], $self->book->add_format($self->font, $self->border));
+  $worksheet->write_col(1,0, $data,    $self->book->add_format($self->border));
+
+  unshift @$data, $header; #put the data back together it is a reference!
 
   #Auto resize columns
   foreach my $col (0 .. scalar(@$header) - 1) {
-    my $width=(sort {$a<=>$b} map {length($_->[$col]||'')} $header, @$data)[-1];
+    my $width=(sort {$a<=>$b} map {length($_->[$col]||'')} @$data)[-1];
     $width = 8 if $width < 8;
     $worksheet->set_column($col, $col, $width);
   }
@@ -150,6 +154,35 @@ sub content {
   return $self->{"content"};
 }
 
+=head1 PROPERTIES
+
+=head2 font
+
+Returns a hash of settings for the body
+
+=cut
+
+sub font {
+  my $self=shift;
+  $self->{"font"}=shift if @_;
+  $self->{"font"}={bg_color=>"silver", bold=>1}
+    unless ref($self->{"font"}) eq "HASH";
+  return wantarray ? %{$self->{"font"}} : $self->{"font"};
+}
+
+=head2 border
+
+Returns a hash of settings for the header row
+
+=cut
+
+sub border {
+  my $self=shift;
+  $self->{"border"}=shift if @_;
+  $self->{"border"}={border=>1, border_color=>"gray", num_format=>'@'}
+    unless ref($self->{"border"}) eq "HASH";
+  return wantarray ? %{$self->{"border"}} : $self->{"border"};
+}
 
 =head1 BUGS
 

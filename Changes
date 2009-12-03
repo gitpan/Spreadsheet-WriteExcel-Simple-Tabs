@@ -8,3 +8,6 @@ Revision history for Perl module Spreadsheet::WriteExcel::Simple::Tabs
   - Tab Names > 31 chars die in upstream package. So, I truncate.
 0.04 2009-10-28
   - Tab Names with "Invalid character []:*?/\ in worksheet name"
+0.05 2009-12-03
+  - Fixed a bug shifting the header record off $data reference
+  - Exposed font and border methods

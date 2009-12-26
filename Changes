@@ -11,3 +11,5 @@ Revision history for Perl module Spreadsheet::WriteExcel::Simple::Tabs
 0.05 2009-12-03
   - Fixed a bug shifting the header record off $data reference
   - Exposed font and border methods
+0.06 2009-12-25
+  - Added better error messages to the two die statements

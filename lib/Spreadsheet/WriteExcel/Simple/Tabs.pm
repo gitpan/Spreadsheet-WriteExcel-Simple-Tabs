@@ -4,7 +4,8 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.05';
+our $VERSION='0.06';
+our $PACKAGE=__PACKAGE__;
 
 =head1 NAME
 
@@ -74,13 +75,14 @@ sub book {
 
 sub add {
   my $self=shift;
-  die("Error: method requires even number of arguments") if scalar(@_) % 2;
+  die("Error: The $PACKAGE->add method requires an even number of arguments")
+    if scalar(@_) % 2;
   while (@_ > 0) {
     my $tab=shift;
     my $data=shift;
-    die(sprintf("Error: Expecting array reference but got %s", ref($data)))
+    die(sprintf(qq{Error: Expecting data to be an array reference but got "%s" in $PACKAGE->add}, ref($data)))
       unless ref($data) eq "ARRAY";
-      $self->_add1($tab=>$data);
+    $self->_add1($tab=>$data);
   }
   return $self;
 }
@@ -101,8 +103,8 @@ sub _add_data {
   my $worksheet=shift;
   my $data=shift;
   my $header=shift(@$data);
-  $worksheet->write_col(0,0,[$header], $self->book->add_format($self->font, $self->border));
-  $worksheet->write_col(1,0, $data,    $self->book->add_format($self->border));
+  $worksheet->write_col(0,0,[$header], $self->book->add_format($self->default, $self->first));
+  $worksheet->write_col(1,0, $data,    $self->book->add_format($self->default));
 
   unshift @$data, $header; #put the data back together it is a reference!
 
@@ -142,74 +144,81 @@ sub header {
 
 =head2 content
 
-  print $ss->content
-
 This returns the binary content of the spreadsheet.
+
+  print $ss->content;
+
+  print $ss->header, $ss->content; #CGI Application
+
+  binmod($fh);
+  print $fh, $ss->content;
 
 =cut
 
 sub content {
-  my $self = shift;
+  my $self=shift;
   $self->book->close;
   return $self->{"content"};
 }
 
 =head1 PROPERTIES
 
-=head2 font
+=head2 first
 
-Returns a hash of settings for the body
+Returns a hash of additional settings for the first row
+
+  $ss->first({setting=>"value"}); #settings from L<Spreadsheet::WriteExcel>
 
 =cut
 
-sub font {
+sub first {
   my $self=shift;
-  $self->{"font"}=shift if @_;
-  $self->{"font"}={bg_color=>"silver", bold=>1}
-    unless ref($self->{"font"}) eq "HASH";
-  return wantarray ? %{$self->{"font"}} : $self->{"font"};
+  $self->{"first"}=shift if @_;
+  $self->{"first"}={bg_color=>"silver", bold=>1}
+    unless ref($self->{"first"}) eq "HASH";
+  return wantarray ? %{$self->{"first"}} : $self->{"first"};
 }
 
-=head2 border
+=head2 default
 
-Returns a hash of settings for the header row
+Returns a hash of default settings for the body
+
+  $ss->default({setting=>"value"}); #settings from L<Spreadsheet::WriteExcel>
 
 =cut
 
-sub border {
+sub default {
   my $self=shift;
-  $self->{"border"}=shift if @_;
-  $self->{"border"}={border=>1, border_color=>"gray", num_format=>'@'}
-    unless ref($self->{"border"}) eq "HASH";
-  return wantarray ? %{$self->{"border"}} : $self->{"border"};
+  $self->{"default"}=shift if @_;
+  $self->{"default"}={border=>1, border_color=>"gray", num_format=>'@'}
+    unless ref($self->{"default"}) eq "HASH";
+  return wantarray ? %{$self->{"default"}} : $self->{"default"};
 }
 
 =head1 BUGS
 
-Log bugs on CPAN.
+Log on RT and contact the author.
 
 =head1 SUPPORT
 
-Try the Author.
+DavisNetworks.com provides support services for all Perl applications including this package.
 
 =head1 AUTHOR
 
-    Michael R. Davis
-    CPAN ID: MRDVT
-    STOP, LLC
-    domain=>michaelrdavis,tld=>com,account=>perl
-    http://www.stopllc.com/
+  Michael R. Davis
+  CPAN ID: MRDVT
+  STOP, LLC
+  domain=>michaelrdavis,tld=>com,account=>perl
+  http://www.stopllc.com/
 
 =head1 COPYRIGHT
 
 Copyright (c) 2009 Michael R. Davis
 Copyright (c) 2001-2005 Tony Bowden (IO::Scalar portion used here "under the same terms as Perl itself")
 
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
+This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
-The full text of the license can be found in the
-LICENSE file included with this module.
+The full text of the license can be found in the LICENSE file included with this module.
 
 =head1 SEE ALSO
 

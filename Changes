@@ -1,5 +1,8 @@
 Revision history for Perl module Spreadsheet::WriteExcel::Simple::Tabs
 
+0.08 2010-10-04
+  - Added add_write_handler to support leading zero numbers as strings.
+  - Added freeze_panes support.
 0.07 2010-10-04
   - Added add_write_handler to support long integer capability per RT61869
   - Added add_write_handler to support a date format e.g. MM/DD/YYYY HH24:MI:SS.

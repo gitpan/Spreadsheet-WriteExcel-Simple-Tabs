@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.07';
+our $VERSION='0.08';
 our $PACKAGE=__PACKAGE__;
 
 =head1 NAME
@@ -15,7 +15,11 @@ Spreadsheet::WriteExcel::Simple::Tabs - Simple Interface to the Spreadsheet::Wri
 
   use Spreadsheet::WriteExcel::Simple::Tabs;
   my $ss=Spreadsheet::WriteExcel::Simple::Tabs->new;
-  my @data=(["Heading1", "Heading2"], ["data1", "data2"], ["data3", "data4"]);
+  my @data=(
+            ["Heading1", "Heading2"],
+            ["data1",    "data2"   ],
+            ["data3",    "data4"   ],
+           );
   $ss->add(Tab1=>\@data, Tab2=>\@data);
   print $ss->header(filename=>"filename.xls"), $ss->content;
 
@@ -105,8 +109,10 @@ sub _add1 {
                    return $sheet->write_date_time(@_);
                  };
   $sheet->add_write_handler(qr/^\d{16,}$/, sub{shift->write_string(@_)});        #Long Integer Support - RT61869
+  $sheet->add_write_handler(qr/^0\d+$/, sub{shift->write_string(@_)});           #Leading Zero Support
   $sheet->add_write_handler(qr{^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$}, $subref); #DateTime Support
   $self->_add_data($sheet, $data);
+  $sheet->freeze_panes(1, 0); 
   return $sheet;
 }
 

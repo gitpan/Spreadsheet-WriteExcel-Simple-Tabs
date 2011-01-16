@@ -2,13 +2,12 @@
 
 =head1 NAME
 
-Spreadsheet-WriteExcel-Simple-Tabs-example.cgi - Spreadsheet::WriteExcel::Simple::Tabs Simple Example
+Spreadsheet-WriteExcel-Simple-Tabs-example.cgi - Spreadsheet::WriteExcel::Simple::Tabs Simple CGI Example
 
 =cut
 
 use strict;
 use warnings;
-use blib;
 use Spreadsheet::WriteExcel::Simple::Tabs;
 my $ss=Spreadsheet::WriteExcel::Simple::Tabs->new;
 my @data=(

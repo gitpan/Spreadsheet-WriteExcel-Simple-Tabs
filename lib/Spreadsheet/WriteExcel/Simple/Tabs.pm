@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.06';
+our $VERSION='0.07';
 our $PACKAGE=__PACKAGE__;
 
 =head1 NAME
@@ -94,6 +94,18 @@ sub _add1 {
   $tab=substr($tab,0,31) if length($tab) > 31; #must be <= 31 chars
   my $data=shift;
   my $sheet=$self->book->add_worksheet($tab);
+  my %format=$self->default; $format{"num_format"}='mm/dd/yyyy hh:mm:ss';
+  my $format_datetime=$self->book->add_format(%format);
+  my $subref=sub {
+                   my $sheet=shift;
+                   my @args=@_;
+                   my ($m,$d,$y,$h,$n,$s)=split(/[\/ :]/, $args[2]);
+                   $args[2]=sprintf("%4d-%02d-%02dT%02d:%02d:%02d", $y, $m, $d, $h, $n, $s);
+                   $args[3]=$format_datetime;
+                   return $sheet->write_date_time(@_);
+                 };
+  $sheet->add_write_handler(qr/^\d{16,}$/, sub{shift->write_string(@_)});        #Long Integer Support - RT61869
+  $sheet->add_write_handler(qr{^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$}, $subref); #DateTime Support
   $self->_add_data($sheet, $data);
   return $sheet;
 }
@@ -190,7 +202,7 @@ Returns a hash of default settings for the body
 sub default {
   my $self=shift;
   $self->{"default"}=shift if @_;
-  $self->{"default"}={border=>1, border_color=>"gray", num_format=>'@'}
+  $self->{"default"}={border=>1, border_color=>"gray"}
     unless ref($self->{"default"}) eq "HASH";
   return wantarray ? %{$self->{"default"}} : $self->{"default"};
 }

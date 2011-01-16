@@ -1,15 +1,20 @@
 Revision history for Perl module Spreadsheet::WriteExcel::Simple::Tabs
 
-0.01 2009-05-19T20:43:00Z
-  - original version; created by ExtUtils::ModuleMaker 0.51
-0.02 2009-05-20T20:32:00Z
-  - Makefile.pm was missing prereq IO::Scalar and Spreadsheet::WriteExcel
-0.03 2009-09-27T20:24:00Z
-  - Tab Names > 31 chars die in upstream package. So, I truncate.
-0.04 2009-10-28
-  - Tab Names with "Invalid character []:*?/\ in worksheet name"
+0.07 2010-10-04
+  - Added add_write_handler to support long integer capability per RT61869
+  - Added add_write_handler to support a date format e.g. MM/DD/YYYY HH24:MI:SS.
+  - Added Script Spreadsheet-WriteExcel-Simple-Tabs-example.pl
+  - Updated Script Spreadsheet-WriteExcel-Simple-Tabs-example.cgi
+0.06 2009-12-25
+  - Added better error messages to the two die statements
 0.05 2009-12-03
   - Fixed a bug shifting the header record off $data reference
   - Exposed font and border methods
-0.06 2009-12-25
-  - Added better error messages to the two die statements
+0.04 2009-10-28
+  - Tab Names with "Invalid character []:*?/\ in worksheet name"
+0.03 2009-09-27T20:24:00Z
+  - Tab Names > 31 chars die in upstream package. So, I truncate.
+0.02 2009-05-20T20:32:00Z
+  - Makefile.pm was missing prereq IO::Scalar and Spreadsheet::WriteExcel
+0.01 2009-05-19T20:43:00Z
+  - original version; created by ExtUtils::ModuleMaker 0.51

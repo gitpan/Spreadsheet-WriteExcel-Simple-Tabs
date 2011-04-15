@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.08';
+our $VERSION='0.09';
 our $PACKAGE=__PACKAGE__;
 
 =head1 NAME
@@ -106,7 +106,7 @@ sub _add1 {
                    my ($m,$d,$y,$h,$n,$s)=split(/[\/ :]/, $args[2]);
                    $args[2]=sprintf("%4d-%02d-%02dT%02d:%02d:%02d", $y, $m, $d, $h, $n, $s);
                    $args[3]=$format_datetime;
-                   return $sheet->write_date_time(@_);
+                   return $sheet->write_date_time(@args);
                  };
   $sheet->add_write_handler(qr/^\d{16,}$/, sub{shift->write_string(@_)});        #Long Integer Support - RT61869
   $sheet->add_write_handler(qr/^0\d+$/, sub{shift->write_string(@_)});           #Leading Zero Support

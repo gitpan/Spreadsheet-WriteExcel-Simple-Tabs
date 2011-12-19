@@ -4,7 +4,7 @@ use warnings;
 use IO::Scalar qw{};
 use Spreadsheet::WriteExcel qw{};
 
-our $VERSION='0.09';
+our $VERSION='0.10';
 our $PACKAGE=__PACKAGE__;
 
 =head1 NAME
@@ -154,7 +154,7 @@ sub header {
      $data{"content_type"}="application/vnd.ms-excel"
        unless defined $data{"content_type"};
   my $header=sprintf("Content-type: %s\n", $data{"content_type"});
-     $header.=sprintf("Content-Disposition: attachment; filename=%s\n",
+     $header.=sprintf(qq{Content-Disposition: attachment; filename="%s";\n},
                          $data{"filename"}) if defined $data{"filename"};
      $header.="\n";
   return $header;

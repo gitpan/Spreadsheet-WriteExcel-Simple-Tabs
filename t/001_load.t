@@ -43,7 +43,7 @@ $header=$ss->header(content_type=>"CT");
 is($header, "Content-type: CT\n\n", 'header2');
 
 $header=$ss->header(filename=>"FN");
-is($header, "Content-type: application/vnd.ms-excel\nContent-Disposition: attachment; filename=FN\n\n", 'header3');
+is($header, qq{Content-type: application/vnd.ms-excel\nContent-Disposition: attachment; filename="FN";\n\n}, 'header3');
 
 $header=$ss->header(filename=>"FN", content_type=>"CT");
-is($header, "Content-type: CT\nContent-Disposition: attachment; filename=FN\n\n", 'header4');
+is($header, qq{Content-type: CT\nContent-Disposition: attachment; filename="FN";\n\n}, 'header4');

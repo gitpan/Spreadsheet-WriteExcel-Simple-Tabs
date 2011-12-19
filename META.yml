@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Spreadsheet-WriteExcel-Simple-Tabs
-version:             0.09
+version:             0.10
 abstract:            Simple Interface to the Spreadsheet::WriteExcel Package
 license:             ~
 author:              
